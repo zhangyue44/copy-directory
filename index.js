@@ -1,10 +1,5 @@
-const http = require('http')
 const fs = require('fs')
 const path = require('path')
-
-const app = http.createServer((req, res) => {
-  res.end('Hello World')
-})
 
 /*为啥取process.argv[2]和process.argv[3]，自己打印一下就理解了*/
 const srcDir = process.argv[2]
@@ -13,8 +8,8 @@ const srcPath = path.resolve(__dirname,srcDir)   // 起始文件夹
 const destPath = path.resolve(__dirname,destDir) // 要复制到的文件夹
 
 /**
- * 同级文件夹中文件复制
- * @param {user} zhangyue27
+ * 文件夹中文件复制
+ * @param {user} zhangyue44
  * node .\index.js test ddd
  * @param fs.existsSync(): 判断是否有该文件
  * @param fs.mkdir(): 创建一个新文件夹
@@ -23,6 +18,10 @@ const destPath = path.resolve(__dirname,destDir) // 要复制到的文件夹
  * @param fs.copyFileSync(): 文件复制
  */
 function copy(src, dest) {
+  if (!fs.existsSync(src)) {
+    console.log(`${srcDir}文件信息不存在`);
+    return
+  }
   if (fs.existsSync(dest)) {
     /*删除当前文件夹，文件夹中有内容时无法直接删除*/
     empty(dest)    // 清空当前路径下的所有文件夹的内容
@@ -45,7 +44,7 @@ function copy(src, dest) {
 }
 /**
  * 文件夹内容清空
- * @param {user} zhangyue27
+ * @param {user} zhangyue44
  * node .\index.js test ddd
  * @param fs.readdirSync(): 读取文件夹
  * @param fs.lstatSync(路径).isDirectory(): 判断是否是文件夹，true是文件夹，false是常规文件
@@ -65,7 +64,7 @@ function copy(src, dest) {
 
 /**
  * 删除路径下的空文件夹
- * @param {user} zhangyue27
+ * @param {user} zhangyue44
  * node .\index.js test ddd
  * @param fs.readdirSync(): 读取文件夹
  * @param fs.rmdirSync(): 删除空文件夹
@@ -83,5 +82,3 @@ function emptyDir(dest) {
   }
 }
 copy(srcPath, destPath)
-
-app.listen(3900, () => { console.log('服务器启动成功');})
